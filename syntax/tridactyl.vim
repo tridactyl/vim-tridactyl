@@ -49,9 +49,10 @@ syntax region tridactylModifiedKeys	matchgroup=Delimiter start="<"	skip="-" end=
 syntax region tridactylAction		start=" "	end=" "		keepend contained contains=tridactylExCommand,@NoSpell
 
 highlight! def link tridactylComment		Comment
-highlight! def link tridactylCommand		Macro
-highlight! def link tridactylAction			Macro
-highlight! def link tridactylExCommand		Function
+highlight! def link tridactylCommand		Function
+highlight! def link tridactylAction			Function
+highlight! def link tridactylExCommand		Statement
+highlight! def link tridactylFlowcontrol	Exception
 highlight! def link tridactylKeys			Character
 
 let b:current_syntax = 'tridactyl'
