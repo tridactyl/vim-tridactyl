@@ -45,8 +45,8 @@ syntax match tridactylKeys			"[^<>-]\+"		contained
 
 syntax region tridactylJavascript	start=" "	end="$"		contained contains=@JS
 syntax region tridactylKeySequence	start=" "	end=" "me=s-1	keepend contained contains=tridactylModifiedKeys,tridactylKeys,@NoSpell nextgroup=tridactylAction
-syntax region tridactylModifiedKeys	matchgroup=Delimiter start="<"	skip="-" end=">" keepend contained contains=tridactylKeys,@NoSpell nextgroup=tridactylAction
-syntax region tridactylAction		start=" "	end=" "		keepend contained contains=tridactylExCommand,@NoSpell
+syntax region tridactylModifiedKeys	matchgroup=Delimiter start="<"	skip="-" end=">" keepend contained contains=tridactylKeys,@NoSpell nextgroup=tridactylKeySequence,tridactylAction
+syntax region tridactylAction		start=" "	end=" \|$"		keepend contained contains=tridactylExCommand,@NoSpell
 
 highlight! def link tridactylComment		Comment
 highlight! def link tridactylCommand		Function
