@@ -44,10 +44,12 @@ syntax match tridactylBindCommand	"^bind\>"	contains=tridactylExCommand,@NoSpell
 syntax match tridactylKeys			".\+"		contained
 
 syntax region tridactylJavascript	start=" "	end="$"		contained contains=@JS
-syntax region tridactylKeySequence	start=" "	end=" "		keepend contained contains=tridactylKeys,@NoSpell
+syntax region tridactylKeySequence	start=" "	end=" "me=s-1	keepend contained contains=tridactylKeys,@NoSpell nextgroup=tridactylAction
+syntax region tridactylAction		start=" "	end=" "		keepend contained contains=tridactylExCommand,@NoSpell
 
 highlight! def link tridactylComment		Comment
 highlight! def link tridactylCommand		Macro
+highlight! def link tridactylAction			Macro
 highlight! def link tridactylExCommand		Function
 highlight! def link tridactylKeys			Character
 
