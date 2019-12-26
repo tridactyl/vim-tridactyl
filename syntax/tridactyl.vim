@@ -16,7 +16,7 @@ syntax sync minlines=50
 
 " Regenerate from Tridactyl source using:
 " :read! sed -n -e "/function.*{/{s/.*function //;s/(.*//;p}" src/excmds.ts | sort -u | xargs
-syntax keyword tridactylExCommand		contained
+syntax keyword tridactylExcmd		contained
 			\ addJump addTridactylEditorClass apropos argParse autocmd autocmddelete
 			\ autocontain back bind bindurl blacklistadd bmark bmarks buildFilterConfigs changelistjump
 			\ clearsearchhighlight clipboard colourscheme comclear command composite containerclose containercreate
@@ -35,25 +35,37 @@ syntax keyword tridactylExCommand		contained
 			\ tabprev tabSetActive tssReadFromCss ttscontrol ttsread ttsvoices tutor unbind unbindurl undo unfocus
 			\ unloadtheme unset unseturl updatecheck updatenative url2args urlincrement urlmodify urlparent urlroot
 			\ validateSetArgs version viewconfig viewcontainers viewsource winclose winopen yank zoom
+			\ document
 
-syntax match tridactylComment		'^".*'		contains=@Spell
-syntax match tridactylCommand		"^\h\+"		contains=tridactylExCommand,@NoSpell
-syntax match tridactylJSCommand		"\<jsb\?\>"	contains=tridactylExCommand,@NoSpell nextgroup=tridactylJavascript
-syntax match tridactylBindCommand	"^bind\>"	contains=tridactylExCommand,@NoSpell nextgroup=tridactylKeySequence
+" :read! sed -n -e "/^const AUCMDS/{s/^.*\[//;s/\]//;s/,//g;p}" src/excmds.ts | sort -u | xargs
+syntax keyword tridactylAucmd		contained
+			\ DocStart DocLoad DocEnd TriStart TabEnter TabLeft FullscreenChange FullscreenEnter FullscreenLeft
 
-syntax match tridactylKeys			"[^<>-]\+"		contained
+syntax match tridactylStart			'^'				keepend contains=@NoSpell nextgroup=tridactylCmd
+syntax match tridactylComment		'^".*$'			contains=@Spell
 
-syntax region tridactylJavascript	start=" "	end="$"		contained contains=@JS
-syntax region tridactylKeySequence	start=" "	end=" "me=s-1	keepend contained contains=tridactylModifiedKeys,tridactylKeys,@NoSpell nextgroup=tridactylAction
-syntax region tridactylModifiedKeys	matchgroup=Delimiter start="<"	skip="-" end=">" keepend contained contains=tridactylKeys,@NoSpell nextgroup=tridactylKeySequence,tridactylAction
-syntax region tridactylAction		start=" "	end=" \|$"		keepend contained contains=tridactylExCommand,@NoSpell
+syntax match tridactylCmd			"\h\+"				keepend contained contains=tridactylExcmd
+syntax match tridactylCmds			"autocmd"			keepend containedin=tridactylCmd contains=tridactylExcmd nextgroup=tridactylEvent
+syntax match tridactylCmds			"\(un\)\?bind\>"	keepend containedin=tridactylCmd contains=tridactylExcmd skipwhite nextgroup=tridactylKeys
+syntax match tridactylCmds			"\(un\)\?bindurl"	keepend containedin=tridactylCmd contains=tridactylExcmd nextgroup=tridactylBindUrl
+syntax match tridactylCmds			"jsb\?"				keepend containedin=tridactylCmd contains=tridactylExcmd nextgroup=tridactylJavascript
+
+syntax match tridactylKeys			'[^ ]\+'		keepend contained skipwhite nextgroup=tridactylCmd
+syntax match Delimiter				'[<>-]'			keepend contained containedin=tridactylKeys
+
+syntax region tridactylJavascript		start=' '	end='$'			keepend oneline contained contains=@JS
+syntax region tridactylEvent			start=' '	end=' 'me=s-1	keepend oneline contains=tridactylAucmd contained nextgroup=tridactylUrl
+syntax region tridactylUrl				start=' '	end=' 'me=s-1	keepend oneline contained nextgroup=tridactylCmd
+syntax region tridactylBindUrl			start=' '	end=' 'me=s-1	keepend oneline contained skipwhite nextgroup=tridactylKeys
 
 highlight! def link tridactylComment		Comment
-highlight! def link tridactylCommand		Function
-highlight! def link tridactylAction			Function
-highlight! def link tridactylExCommand		Statement
-highlight! def link tridactylFlowcontrol	Exception
+highlight! def link tridactylCmd			Function
+highlight! def link tridactylCmds			Type
+highlight! def link tridactylExcmd			Statement
+highlight! def link tridactylAucmd			Constant
 highlight! def link tridactylKeys			Character
+highlight! def link tridactylUrl			String
+highlight! def link tridactylBindUrl		String
 
 let b:current_syntax = 'tridactyl'
 " vim: set noet ts=4 sw=4 sts=4:
