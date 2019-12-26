@@ -9,6 +9,8 @@ if exists('b:current_syntax')
 	finish
 endif
 
+syntax include @JS	syntax/javascript.vim
+
 syntax sync maxlines=200
 syntax sync minlines=50
 
@@ -36,6 +38,9 @@ syntax keyword tridactylExCommand		contained
 
 syntax match tridactylComment		'^".*'		contains=@Spell
 syntax match tridactylCommand		"^\h\+"		contains=tridactylExCommand,@NoSpell
+syntax match tridactylJSCommand		"\<jsb\?\>"	contains=tridactylExCommand,@NoSpell nextgroup=tridactylJavascript
+
+syntax region tridactylJavascript	start=" "	end="$"		contained contains=@JS
 
 highlight! def link tridactylComment		Comment
 highlight! def link tridactylCommand		Macro
