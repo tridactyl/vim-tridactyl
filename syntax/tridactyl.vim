@@ -39,12 +39,17 @@ syntax keyword tridactylExCommand		contained
 syntax match tridactylComment		'^".*'		contains=@Spell
 syntax match tridactylCommand		"^\h\+"		contains=tridactylExCommand,@NoSpell
 syntax match tridactylJSCommand		"\<jsb\?\>"	contains=tridactylExCommand,@NoSpell nextgroup=tridactylJavascript
+syntax match tridactylBindCommand	"^bind\>"	contains=tridactylExCommand,@NoSpell nextgroup=tridactylKeySequence
+
+syntax match tridactylKeys			".\+"		contained
 
 syntax region tridactylJavascript	start=" "	end="$"		contained contains=@JS
+syntax region tridactylKeySequence	start=" "	end=" "		keepend contained contains=tridactylKeys,@NoSpell
 
 highlight! def link tridactylComment		Comment
 highlight! def link tridactylCommand		Macro
 highlight! def link tridactylExCommand		Function
+highlight! def link tridactylKeys			Character
 
 let b:current_syntax = 'tridactyl'
 " vim: set noet ts=4 sw=4 sts=4:
