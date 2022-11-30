@@ -42,7 +42,7 @@ syntax keyword tridactylAucmd		contained
 			\ DocStart DocLoad DocEnd TriStart TabEnter TabLeft FullscreenChange FullscreenEnter FullscreenLeft
 
 syntax match tridactylStart			'^'				keepend contains=@NoSpell nextgroup=tridactylCmd
-syntax match tridactylComment		'^".*$'			contains=@Spell
+syntax match tridactylComment		'^\s*["#].*$'		contains=@Spell
 
 syntax match tridactylCmd			"\h\+"				keepend contained contains=tridactylExcmd
 syntax match tridactylCmds			"autocmd"			keepend containedin=tridactylCmd contains=tridactylExcmd nextgroup=tridactylEvent
